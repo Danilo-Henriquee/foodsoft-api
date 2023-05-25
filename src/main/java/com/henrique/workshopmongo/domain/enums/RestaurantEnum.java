@@ -1,11 +1,11 @@
 package com.henrique.workshopmongo.domain.enums;
 
 public enum RestaurantEnum {
-	ARABIC,
-	JAPANESE,
-	BRAZILIAN,
-	MEXICAN;
-	
+	ARABE,
+	JAPONESA,
+	BRAZILEIRA,
+	MEXICANA;
+
 	public static RestaurantEnum fromString(String type) {
 		return valueOf(type.toUpperCase());
 	}

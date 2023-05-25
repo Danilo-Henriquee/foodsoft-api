@@ -3,4 +3,5 @@ spring:
       mongodb:
         uri: mongodb://localhost:27017/foodsoft
         auto-index-creation: true
-        
+cors:
+  originPatterns: http://localhost:3000,http://localhost:8080
