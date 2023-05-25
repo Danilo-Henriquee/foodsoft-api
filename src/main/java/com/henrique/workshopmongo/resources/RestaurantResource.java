@@ -1,6 +1,7 @@
 package com.henrique.workshopmongo.resources;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.henrique.workshopmongo.domain.Restaurant;
+import com.henrique.workshopmongo.domain.dto.RestaurantDTO;
 import com.henrique.workshopmongo.domain.enums.RestaurantEnum;
 import com.henrique.workshopmongo.services.RestaurantService;
 
@@ -23,30 +25,35 @@ public class RestaurantResource {
 	private RestaurantService service;
 	
 	@GetMapping
-	private ResponseEntity<List<Restaurant>> findAll() {
+	private ResponseEntity<List<RestaurantDTO>> findAll() {
 		List<Restaurant> list = service.findAll();
 		
-		return ResponseEntity.ok().body(list);
+		List<RestaurantDTO> listDTO = list.stream().map(rest -> new RestaurantDTO(rest)).collect(Collectors.toList());
+		
+		return ResponseEntity.ok().body(listDTO);
 	}
 	
 	@GetMapping(value = "/{id}")
-	private ResponseEntity<Restaurant> findById(@PathVariable String id) {
+	private ResponseEntity<RestaurantDTO> findById(@PathVariable String id) {
 		Restaurant rest = service.findById(id);
 		
-		return ResponseEntity.ok().body(rest);
+		return ResponseEntity.ok().body(new RestaurantDTO(rest));
 	}
 	
 	@GetMapping(value = "/type/{type}")
-	private ResponseEntity<List<Restaurant>> findAllByType(@PathVariable String type) {
+	private ResponseEntity<List<RestaurantDTO>> findAllByType(@PathVariable String type) {
 		List<Restaurant> list = service.findAllByType(RestaurantEnum.fromString(type));
+		List<RestaurantDTO> listDTO = list.stream().map(rest -> new RestaurantDTO(rest)).collect(Collectors.toList());
 		
-		return ResponseEntity.ok().body(list);
+		return ResponseEntity.ok().body(listDTO);
 	}
 	
 	@PostMapping
-	private ResponseEntity<Restaurant> insert(@RequestBody Restaurant rest) {
+	private ResponseEntity<RestaurantDTO> insert(@RequestBody Restaurant rest) {
 		service.insert(rest);
 		
-		return ResponseEntity.noContent().build();
+		RestaurantDTO restDTO = new RestaurantDTO(rest);
+		
+		return ResponseEntity.ok().body(restDTO);
 	}
 }

@@ -1,4 +1,4 @@
-package com.henrique.workshopmongo.domain;
+package com.henrique.workshopmongo.domain.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -7,41 +7,27 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.henrique.workshopmongo.domain.Restaurant;
 import com.henrique.workshopmongo.domain.enums.RestaurantEnum;
 
 @Document
-public class Restaurant implements Serializable {
+public class RestaurantDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	private String id;
-	
-	@Indexed(unique = true)
 	private String name;
-	
-	@Indexed(unique = true)
 	private String email;
 	private RestaurantEnum type;
 	private String adress;
 	
-	public Restaurant() {
+	public RestaurantDTO() {
 	}
 
-	public Restaurant(String id, String name, String email, RestaurantEnum type, String adress) {
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.type = type;
-		this.adress = adress;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+	public RestaurantDTO(Restaurant rest) {
+		this.name = rest.getName();
+		this.email = rest.getEmail();
+		this.type = rest.getType();
+		this.adress = rest.getAdress();
 	}
 
 	public String getName() {
@@ -74,23 +60,6 @@ public class Restaurant implements Serializable {
 
 	public void setAdress(String adress) {
 		this.adress = adress;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Restaurant other = (Restaurant) obj;
-		return Objects.equals(id, other.id);
 	}
 	
 }
