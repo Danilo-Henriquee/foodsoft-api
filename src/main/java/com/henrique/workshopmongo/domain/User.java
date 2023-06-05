@@ -1,28 +1,36 @@
 package com.henrique.workshopmongo.domain;
 
-import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Document
-public class User implements Serializable {
+public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private String id;
-	private String name;
-	private String email;
+	
+	private String username;
+	private String password;
+	private Boolean isAccountNonExpired;
+	private Boolean isAccountNonLocked;
+	private Boolean isCredentialsNonExpired;
+	private Boolean isEnabled;
 	
 	public User() {
 	}
 	
-	public User(String id, String name, String email) {
-		this.id = id;
-		this.name = name;
-		this.email = email;
+	public User(String username, String password) {
+		this.username = username;
+		this.password = password;
 	}
 
 	public String getId() {
@@ -32,21 +40,9 @@ public class User implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUserName(String username) {
+		this.username = username;
 	}
 
 	@Override
@@ -64,5 +60,40 @@ public class User implements Serializable {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return Arrays.asList(new SimpleGrantedAuthority("ROLE_USERS"));
+	}
+
+	@Override
+	public String getPassword() {
+		return password;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.username;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 }

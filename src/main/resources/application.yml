@@ -5,3 +5,8 @@ spring:
         auto-index-creation: true
 cors:
   originPatterns: http://localhost:3000,http://localhost:8080
+  
+security:
+      jwt:
+        token-expire: 2
+        token-secret: 1y4mc72ls1bc2
