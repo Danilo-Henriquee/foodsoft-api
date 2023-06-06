@@ -22,6 +22,8 @@ public class FoodsoftApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		repo.deleteAll();
+		
 		User u1 = new User("maria", "123456");
 		User u2 = new User("joao", "654321");
 		
